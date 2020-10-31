@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="OffersTestingModelStoreContainer" CdmEntityContainer="OffersTestingEntities">
+    <EntitySetMapping Name="ItemDetails">
+      <EntityTypeMapping TypeName="OffersTestingModel.ItemDetail">
+        <MappingFragment StoreEntitySet="ItemDetail">
+          <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="OffersInventories">
+      <EntityTypeMapping TypeName="OffersTestingModel.OffersInventory">
+        <MappingFragment StoreEntitySet="OffersInventory">
+          <ScalarProperty Name="OfferId" ColumnName="OfferId" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Image" ColumnName="Image" />
+          <ScalarProperty Name="SortOrder" ColumnName="SortOrder" />
+          <ScalarProperty Name="Target" ColumnName="Target" />
+          <ScalarProperty Name="PricingId" ColumnName="PricingId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PricingDetails">
+      <EntityTypeMapping TypeName="OffersTestingModel.PricingDetail">
+        <MappingFragment StoreEntitySet="PricingDetails">
+          <ScalarProperty Name="PricingId" ColumnName="PricingId" />
+          <ScalarProperty Name="Coins" ColumnName="Coins" />
+          <ScalarProperty Name="Gems" ColumnName="Gems" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="OfferContents">
+      <EntityTypeMapping TypeName="OffersTestingModel.OfferContent">
+        <MappingFragment StoreEntitySet="OfferContent">
+          <ScalarProperty Name="OfferId" ColumnName="OfferId" />
+          <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+          <ScalarProperty Name="quantity" ColumnName="quantity" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

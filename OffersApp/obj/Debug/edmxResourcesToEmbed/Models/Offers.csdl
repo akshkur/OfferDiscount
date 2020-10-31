@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="OffersTestingModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="ItemDetail">
+    <Key>
+      <PropertyRef Name="ItemId" />
+    </Key>
+    <Property Name="ItemId" Type="Int32" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="OffersInventory">
+    <Key>
+      <PropertyRef Name="OfferId" />
+    </Key>
+    <Property Name="OfferId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="SortOrder" Type="Int32" Nullable="false" />
+    <Property Name="Target" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="PricingId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="OfferContents" Relationship="Self.FK_OfferContent_OffersInventory" FromRole="OffersInventory" ToRole="OfferContent" />
+    <NavigationProperty Name="PricingDetail" Relationship="Self.FK_OffersInventory_PricingDetails" FromRole="OffersInventory" ToRole="PricingDetails" />
+  </EntityType>
+  <EntityType Name="PricingDetail">
+    <Key>
+      <PropertyRef Name="PricingId" />
+    </Key>
+    <Property Name="PricingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Coins" Type="Int32" />
+    <Property Name="Gems" Type="Int32" />
+    <NavigationProperty Name="OffersInventories" Relationship="Self.FK_OffersInventory_PricingDetails" FromRole="PricingDetails" ToRole="OffersInventory" />
+  </EntityType>
+  <EntityType Name="OfferContent">
+    <Key>
+      <PropertyRef Name="OfferId" />
+      <PropertyRef Name="ItemId" />
+      <PropertyRef Name="quantity" />
+    </Key>
+    <Property Name="OfferId" Type="Int32" Nullable="false" />
+    <Property Name="ItemId" Type="Int32" Nullable="false" />
+    <Property Name="quantity" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="OffersInventory" Relationship="Self.FK_OfferContent_OffersInventory" FromRole="OfferContent" ToRole="OffersInventory" />
+  </EntityType>
+  <Association Name="FK_OfferContent_OffersInventory">
+    <End Role="OffersInventory" Type="Self.OffersInventory" Multiplicity="1" />
+    <End Role="OfferContent" Type="Self.OfferContent" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OffersInventory">
+        <PropertyRef Name="OfferId" />
+      </Principal>
+      <Dependent Role="OfferContent">
+        <PropertyRef Name="OfferId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OffersInventory_PricingDetails">
+    <End Role="PricingDetails" Type="Self.PricingDetail" Multiplicity="1" />
+    <End Role="OffersInventory" Type="Self.OffersInventory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PricingDetails">
+        <PropertyRef Name="PricingId" />
+      </Principal>
+      <Dependent Role="OffersInventory">
+        <PropertyRef Name="PricingId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="OffersTestingEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="ItemDetails" EntityType="Self.ItemDetail" />
+    <EntitySet Name="OffersInventories" EntityType="Self.OffersInventory" />
+    <EntitySet Name="PricingDetails" EntityType="Self.PricingDetail" />
+    <EntitySet Name="OfferContents" EntityType="Self.OfferContent" />
+    <AssociationSet Name="FK_OfferContent_OffersInventory" Association="Self.FK_OfferContent_OffersInventory">
+      <End Role="OffersInventory" EntitySet="OffersInventories" />
+      <End Role="OfferContent" EntitySet="OfferContents" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OffersInventory_PricingDetails" Association="Self.FK_OffersInventory_PricingDetails">
+      <End Role="PricingDetails" EntitySet="PricingDetails" />
+      <End Role="OffersInventory" EntitySet="OffersInventories" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

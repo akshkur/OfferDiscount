@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="OffersTestingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="ItemDetail">
+    <Key>
+      <PropertyRef Name="ItemId" />
+    </Key>
+    <Property Name="ItemId" Type="int" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'OffersTesting.dbo.OfferContent' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="OfferContent">
+    <Key>
+      <PropertyRef Name="OfferId" />
+      <PropertyRef Name="ItemId" />
+      <PropertyRef Name="quantity" />
+    </Key>
+    <Property Name="OfferId" Type="int" Nullable="false" />
+    <Property Name="ItemId" Type="int" Nullable="false" />
+    <Property Name="quantity" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="OffersInventory">
+    <Key>
+      <PropertyRef Name="OfferId" />
+    </Key>
+    <Property Name="OfferId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Title" Type="varchar(max)" />
+    <Property Name="Description" Type="varchar(max)" />
+    <Property Name="Image" Type="varchar(max)" />
+    <Property Name="SortOrder" Type="int" Nullable="false" />
+    <Property Name="Target" Type="varchar(max)" />
+    <Property Name="PricingId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PricingDetails">
+    <Key>
+      <PropertyRef Name="PricingId" />
+    </Key>
+    <Property Name="PricingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Coins" Type="int" />
+    <Property Name="Gems" Type="int" />
+  </EntityType>
+  <Association Name="FK_OfferContent_OffersInventory">
+    <End Role="OffersInventory" Type="Self.OffersInventory" Multiplicity="1" />
+    <End Role="OfferContent" Type="Self.OfferContent" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OffersInventory">
+        <PropertyRef Name="OfferId" />
+      </Principal>
+      <Dependent Role="OfferContent">
+        <PropertyRef Name="OfferId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OffersInventory_PricingDetails">
+    <End Role="PricingDetails" Type="Self.PricingDetails" Multiplicity="1" />
+    <End Role="OffersInventory" Type="Self.OffersInventory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PricingDetails">
+        <PropertyRef Name="PricingId" />
+      </Principal>
+      <Dependent Role="OffersInventory">
+        <PropertyRef Name="PricingId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="OffersTestingModelStoreContainer">
+    <EntitySet Name="ItemDetail" EntityType="Self.ItemDetail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="OffersInventory" EntityType="Self.OffersInventory" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PricingDetails" EntityType="Self.PricingDetails" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="OfferContent" EntityType="Self.OfferContent" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [OfferContent].[OfferId] AS [OfferId], 
+    [OfferContent].[ItemId] AS [ItemId], 
+    [OfferContent].[quantity] AS [quantity]
+    FROM [dbo].[OfferContent] AS [OfferContent]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_OfferContent_OffersInventory" Association="Self.FK_OfferContent_OffersInventory">
+      <End Role="OffersInventory" EntitySet="OffersInventory" />
+      <End Role="OfferContent" EntitySet="OfferContent" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OffersInventory_PricingDetails" Association="Self.FK_OffersInventory_PricingDetails">
+      <End Role="PricingDetails" EntitySet="PricingDetails" />
+      <End Role="OffersInventory" EntitySet="OffersInventory" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
